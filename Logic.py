@@ -26,3 +26,24 @@ def show_menu_options():
     print("4. Видалити страву")
     print("5. Показати загальну ціну")
     print("0. Вихід")
+
+def get_total_info(menu):
+    total = sum(item['ціна'] for item in menu)
+    print(f"\nЗагальна сума: {total} грн")
+    print(f"Кількість страв: {len(menu)}")
+
+def get_price_by_category(menu):
+    category = input("Введіть назву категорії: ")
+    total = sum(item['ціна'] for item in menu if item.get('категорія') == category)
+    print(f"Сума категорії {category}: {total} грн")
+
+def sort_menu_by_price(menu):
+    print("\n1. Від дешевих до дорогих")
+    print("2. Від дорогих до дешевих")
+    choice = input("Ваш вибір: ")
+    
+    is_reverse = True if choice == "2" else False
+    sorted_menu = sorted(menu, key=lambda x: x['ціна'], reverse=is_reverse)
+    
+    for item in sorted_menu:
+        print(f"{item['назва']}: {item['ціна']} грн")
