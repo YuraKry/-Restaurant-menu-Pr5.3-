@@ -112,3 +112,5 @@ while True:
         break
     else:
         print("Невірний вибір!")
+
+print("💅🏻")
