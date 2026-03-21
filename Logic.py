@@ -24,23 +24,58 @@ def categorize_menu(menu_list):
         "Напої": [],
         "Десерти": []
     }
-
     for item in menu_list:
         name = item["назва"].lower()
 
         if "кава" in name or "трав’яний чай" in name or "лимонад" in name or "компот" in name or "апельсиновий сік" in name:
-            item["Категорія"] = "Напої"
+            item["категорія"] = "Напої"
         elif "морковний торт" in name or "йогурт з фруктами" in name or "панкейки з ягодами" in name:
-            item["Категорія"] = "Десерти"
+            item["категорія"] = "Десерти"
         elif "яйця з беконом" in name:
-            item["Категорія"] = "Сніданки"
+            item["категорія"] = "Сніданки"
         else:
-            item["Категорія"] = "Основні страви"
+            item["категорія"] = "Основні страви"
 
-        categorized[item["Категорія"]].append(item)
+        categorized[item["категорія"]].append(item)
 
     return categorized
+def count_items():
+    """Функція підрахунку кількості страв"""
+    print(f"\n[Кількість страв у меню: {len(menu)}]")
 
+
+def delete_dish():
+    """Функція видалення страв"""
+    print("\n--- ВИДАЛЕННЯ ---")
+    print("1. Видалити за назвою")
+    print("2. Видалити всі страви за категорією")
+
+    sub_choice = input("Оберіть варіант видалення: ")
+
+    if sub_choice == "1":
+        name = input("Введіть назву страви для видалення: ").lower()
+        # Видаляємо страву, якщо назва збігається
+        initial_len = len(menu)
+        menu[:] = [item for item in menu if item["назва"].lower() != name]
+
+        if len(menu) < initial_len:
+            print(f"Страва '{name}' успішно видалена.")
+        else:
+            print("Страву не знайдено.")
+
+    elif sub_choice == "2":
+        cat = input("Введіть назву категорії для видалення: ").lower()
+        initial_len = len(menu)
+        # Видаляємо всі страви вказаної категорії
+        menu[:] = [item for item in menu if item.get("категорія" , "невідомо").lower() != cat]
+
+        deleted_count = initial_len - len(menu)
+        if deleted_count > 0:
+            print(f"Видалено {deleted_count} страв з категорії '{cat}'.")
+        else:
+            print("Категорію не знайдено.")
+
+    count_items()  
 def show_menu_by_category(menu_list):
     categorized = categorize_menu(menu_list)
 
@@ -76,9 +111,9 @@ def edit_dish(menu_list):
     if new_decs:
         dish["опис"] = new_decs
 
-    new_category = input("Нова Категорія: ")
+    new_category = input("Нова категорія: ")
     if new_category:
-        dish["Категорія"] = new_category
+        dish["категорія"] = new_category
 
     print("Успішно оновлено")
 
@@ -103,6 +138,7 @@ def add_new_dish(menu_list):
         "опис": description,
     }
     menu_list.append(new_dish)
+    categorize_menu(menu_list)
     print(f"\n Страву '{name}' успішно додано!")
 
 def main():
@@ -114,7 +150,7 @@ def main():
              "3. Показати меню за категорією\n"
              "4. Знайти страву за назвою\n"
              "5. Додавання нової ціни\n"
-             "6. Видалити страву\n"
+             "6. Видалити страву(за назвою або категорію)\n"
              "7. Показати загальну ціну\n"
              "0. Вихід"
         )
@@ -145,6 +181,8 @@ def main():
                 print("Страву не знайдено")
         elif choose == 5:
             edit_dish(menu)
+        elif choose == 6:
+            delete_dish()
             
             
      
