@@ -17,17 +17,7 @@ menu = [
     {"назва": "Морковний торт", "ціна": 65, "опис": "Десерт з моркви з горіхами та медовим кремом"},
     {"назва": "Трав’яний чай", "ціна": 20, "опис": "Чай з сушених трав для заспокоєння"}
 ]
-
-def show_menu_options():
-    print("\n--- СИСТЕМА КЕРУВАННЯ МЕНЮ ---")
-    print("1. Показати всі страви")
-    print("2. Додати страву")
-    print("3. Редагувати страву")
-    print("4. Видалити страву")
-    print("5. Показати загальну ціну")
-    print("0. Вихід")
-
-def categorize_menu():
+def categorize_menu(menu_list):
     categorized = {
         "Сніданки": [],
         "Основні страви": [],
@@ -35,14 +25,14 @@ def categorize_menu():
         "Десерти": []
     }
 
-    for item in menu:
+    for item in menu_list:
         name = item["назва"].lower()
 
-        if "Кава" in name or "Трав’яний чай" in name or "Лимонад" in name or "Компот" in name or "Апельсиновий сік" in name:
+        if "кава" in name or "трав’яний чай" in name or "лимонад" in name or "компот" in name or "апельсиновий сік" in name:
             item["Категорія"] = "Напої"
-        elif "Морковний торт" in name or "Йогурт з фруктами" in name or "Панкейки з ягодами" in name:
+        elif "морковний торт" in name or "йогурт з фруктами" in name or "панкейки з ягодами" in name:
             item["Категорія"] = "Десерти"
-        elif "Яйця з беконом" in name:
+        elif "яйця з беконом" in name:
             item["Категорія"] = "Сніданки"
         else:
             item["Категорія"] = "Основні страви"
@@ -50,11 +40,6 @@ def categorize_menu():
         categorized[item["Категорія"]].append(item)
 
     return categorized
-
-def show_all_menu(menu_list):
-    print("\n __ВСЕ МЕНЮ__")
-    for item in menu_list:
-        print(f"{item ['назва']}, | {item['ціна']} грн | {item ['опис']}")
 
 def show_menu_by_category(menu_list):
     categorized = categorize_menu(menu_list)
@@ -91,26 +76,77 @@ def edit_dish(menu_list):
     if new_decs:
         dish["опис"] = new_decs
 
-    new_category = input("Нова категорія: ")
+    new_category = input("Нова Категорія: ")
     if new_category:
-        dish["категорія"] = new_category
+        dish["Категорія"] = new_category
 
     print("Успішно оновлено")
 
-while True:
-    show_menu_options()
-    choice = input("Обери дію: ")
+def add_new_dish(menu_list):
+    print("\nДодавання нової страви")
+    name = input("Введіть назву: ")
 
-    if choice == "1":
-        show_all_menu(menu)
-    elif choice == "2":
-        show_menu_by_category(menu)
-    elif choice == "3":
-        edit_dish(menu)
-    elif choice == "0":
-        print("Вихід.")
-        break
-    else:
-        print("Невірний вибір!")
+    while True:
+        try:
+            price = float(input("Введіть ціну: "))
+            if price < 0:
+                print("Помилка: ціна не може бути від'ємною")
+            else:
+                break
+        except ValueError:
+            print("Будь ласка, введіть число.")
 
-print("💅🏻")
+    description = input("Введіть опис: ")
+    new_dish = {
+        "назва": name,
+        "ціна": price,
+        "опис": description,
+    }
+    menu_list.append(new_dish)
+    print(f"\n Страву '{name}' успішно додано!")
+
+def main():
+    while True:
+        print(
+             "\n--- СИСТЕМА КЕРУВАННЯ МЕНЮ ---\n"
+             "1. Показати всі страви\n"
+             "2. Додати страву\n"
+             "3. Показати меню за категорією\n"
+             "4. Знайти страву за назвою\n"
+             "5. Додавання нової ціни\n"
+             "6. Видалити страву\n"
+             "7. Показати загальну ціну\n"
+             "0. Вихід"
+        )
+        try:
+            choose = int(input("Введіть цифру (0-7): "))
+        except ValueError:
+            print("Помилка! Вводити можна тільки цифри.")
+            continue
+        if choose == 1:
+                print("\n" + "=" * 80)
+                print(f"{'№':<3} | {'Назва':<20} | {'Ціна':<10} | {'Опис'}")
+                print("-" * 80)
+                for i, dish in enumerate(menu, 1):
+                    print(f"{i:<3} | {dish['назва']:<20} | {dish['ціна']:>7} грн | {dish['опис']}")
+
+                print("=" * 80 + "\n")
+        elif choose == 2:
+            add_new_dish(menu)
+        elif choose == 3:
+            show_menu_by_category(menu)
+        elif choose == 4:
+            name = input("Введіть назву страви: ").strip()
+            dish = find_dish(menu, name)
+
+            if dish:
+                print(f"Знайдено: {dish['назва']} | {dish['ціна']} грн | {dish['опис']}")
+            else:
+                print("Страву не знайдено")
+        elif choose == 5:
+            edit_dish(menu)
+            
+            
+     
+if __name__ == "__main__":
+    main()
