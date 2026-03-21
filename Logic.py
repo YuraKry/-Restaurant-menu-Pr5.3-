@@ -18,11 +18,56 @@ menu = [
     {"назва": "Трав’яний чай", "ціна": 20, "опис": "Чай з сушених трав для заспокоєння"}
 ]
 
-def show_menu_options():
-    print("\n--- СИСТЕМА КЕРУВАННЯ МЕНЮ ---")
-    print("1. Показати всі страви")
-    print("2. Додати страву")
-    print("3. Редагувати страву")
-    print("4. Видалити страву")
-    print("5. Показати загальну ціну")
-    print("0. Вихід")
+
+def add_new_dish(menu_list):
+    print("\nДодавання нової страви")
+    name = input("Введіть назву: ")
+
+    while True:
+        try:
+            price = float(input("Введіть ціну: "))
+            if price < 0:
+                print("Помилка: ціна не може бути від'ємною")
+            else:
+                break
+        except ValueError:
+            print("Будь ласка, введіть число.")
+
+    description = input("Введіть опис: ")
+    new_dish = {
+        "назва": name,
+        "ціна": price,
+        "опис": description,
+    }
+    menu.append(new_dish)
+    print(f"\n Страву '{name}' успішно додано!")
+
+def main():
+    while True:
+        print(
+             "\n--- СИСТЕМА КЕРУВАННЯ МЕНЮ ---\n"
+             "1. Показати всі страви\n"
+             "2. Додати страву\n"
+             "3. Редагувати страву\n"
+             "4. Видалити страву\n"
+             "5. Показати загальну ціну\n"
+             "0. Вихід"
+        )
+        try:
+            choose = int(input("Введіть цифру (0-5): "))
+        except ValueError:
+            print("Помилка! Вводити можна тільки цифри.")
+            continue
+        if choose == 1:
+                print("\n" + "=" * 80)
+                print(f"{'№':<3} | {'Назва':<20} | {'Ціна':<10} | {'Опис'}")
+                print("-" * 80)
+                for i, dish in enumerate(menu, 1):
+                    print(f"{i:<3} | {dish['назва']:<20} | {dish['ціна']:>7} грн | {dish['опис']}")
+
+                print("=" * 80 + "\n")
+        if choose == 2:
+            add_new_dish(menu)
+        break
+if __name__ == "__main__":
+    main()
