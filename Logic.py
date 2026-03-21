@@ -18,3 +18,26 @@ menu = [
     {"назва": "Трав’яний чай", "ціна": 20, "опис": "Чай з сушених трав для заспокоєння"}
 ]
 
+
+def add_new_dish(menu_list):
+    print("\nДодавання нової страви")
+    name = input("Введіть назву: ")
+
+    while True:
+        try:
+            price = float(input("Введіть ціну: "))
+            if price < 0:
+                print("Помилка: ціна не може бути від'ємною")
+            else:
+                break
+        except ValueError:
+            print("Будь ласка, введіть число.")
+
+    description = input("Введіть опис: ")
+    new_dish = {
+        "назва": name,
+        "ціна": price,
+        "опис": description,
+    }
+    menu.append(new_dish)
+    print(f"\n Страву '{name}' успішно додано!")
