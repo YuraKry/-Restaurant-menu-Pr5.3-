@@ -85,7 +85,7 @@ def delete_dish(menu):
             print("Страву не знайдено.")
 
     elif sub_choice == "2":
-        cat = input("Введіть назву категорії для видалення: ").strip().capitalize()
+        cat = input("Введіть назву категорії для видалення: ").strip().lower()
         initial_len = len(menu)
         # Видаляємо всі страви вказаної категорії
         menu[:] = [item for item in menu if item.get("категорія" , "невідомо").lower() != cat]
