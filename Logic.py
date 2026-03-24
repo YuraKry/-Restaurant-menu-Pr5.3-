@@ -26,27 +26,6 @@ def categorize_menu(menu_list):
     }
     for item in menu_list:
         name = item["назва"].lower()
-
- zadannya-G
-
-def get_total_stats(menu):
-    total_sum = sum(item['ціна'] for item in menu)
-    print(f"Загальна ціна: {total_sum} грн. Кількість страв: {len(menu)}")
-
-
-def get_category_price(menu):
-    cat = input("Введіть категорію: ")
-    res = sum(item['ціна'] for item in menu if item.get('категорія') == cat)
-    print(f"Сума для {cat}: {res} грн")
-
-
-def sort_by_price(menu):
-    print("1. Зростання 2. Спадання")
-    rev = True if input() == "2" else False
-    sorted_m = sorted(menu, key=lambda x: x['ціна'], reverse=rev)
-    for i in sorted_m: print(f"{i['назва']}: {i['ціна']}")
-
-
         if "кава" in name or "трав’яний чай" in name or "лимонад" in name or "компот" in name or "апельсиновий сік" in name:
             item["категорія"] = "Напої"
         elif "морковний торт" in name or "йогурт з фруктами" in name or "панкейки з ягодами" in name:
@@ -59,12 +38,34 @@ def sort_by_price(menu):
         categorized[item["категорія"]].append(item)
 
     return categorized
-def count_items():
+
+def get_total_stats(menu):
+    total_sum = sum(item['ціна'] for item in menu)
+    print(f"Загальна ціна: {total_sum} грн. Кількість страв: {len(menu)}")
+
+
+def get_category_price(menu):
+    categorize_menu(menu)
+    cat = input("Введіть категорію: ").strip().capitalize()
+    res = sum(item['ціна'] for item in menu if item.get('категорія') == cat)
+    print(f"Сума для {cat}: {res} грн")
+
+
+def sort_by_price(menu):
+    print("1. Зростання 2. Спадання")
+    rev = True if input() == "2" else False
+    sorted_m = sorted(menu, key=lambda x: x['ціна'], reverse=rev)
+    for i in sorted_m: print(f"{i['назва']}: {i['ціна']}")
+
+
+       
+def count_items(menu_list):
     """Функція підрахунку кількості страв"""
-    print(f"\n[Кількість страв у меню: {len(menu)}]")
+    print(f"\n[Кількість страв у меню: {len(menu_list)}]")
 
 
-def delete_dish():
+def delete_dish(menu):
+    categorize_menu(menu)
     """Функція видалення страв"""
     print("\n--- ВИДАЛЕННЯ ---")
     print("1. Видалити за назвою")
@@ -84,7 +85,7 @@ def delete_dish():
             print("Страву не знайдено.")
 
     elif sub_choice == "2":
-        cat = input("Введіть назву категорії для видалення: ").lower()
+        cat = input("Введіть назву категорії для видалення: ").strip().capitalize()
         initial_len = len(menu)
         # Видаляємо всі страви вказаної категорії
         menu[:] = [item for item in menu if item.get("категорія" , "невідомо").lower() != cat]
@@ -95,7 +96,7 @@ def delete_dish():
         else:
             print("Категорію не знайдено.")
 
-    count_items()  
+    count_items(menu)  
 def show_menu_by_category(menu_list):
     categorized = categorize_menu(menu_list)
 
@@ -143,7 +144,7 @@ def add_new_dish(menu_list):
 
     while True:
         try:
-            price = float(input("Введіть ціну: "))
+            price = int(input("Введіть ціну: "))
             if price < 0:
                 print("Помилка: ціна не може бути від'ємною")
             else:
@@ -171,11 +172,13 @@ def main():
              "4. Знайти страву за назвою\n"
              "5. Додавання нової ціни\n"
              "6. Видалити страву(за назвою або категорію)\n"
-             "7. Показати загальну ціну\n"
+             "7. Показати кількість страв\n"
+             "8. Сортувати страви за ціною\n"
+             "9. Показати загальну ціну\n"
              "0. Вихід"
         )
         try:
-            choose = int(input("Введіть цифру (0-7): "))
+            choose = int(input("Введіть цифру (0-9): "))
         except ValueError:
             print("Помилка! Вводити можна тільки цифри.")
             continue
@@ -202,10 +205,16 @@ def main():
         elif choose == 5:
             edit_dish(menu)
         elif choose == 6:
-            delete_dish()
-            
+            delete_dish(menu)
+        elif choose == 7:
+            count_items(menu)
+        elif choose == 8:
+            sort_by_price(menu)
+        elif choose == 9:
+            get_total_stats(menu)
+        elif choose == 0:
+            break
             
      
 if __name__ == "__main__":
     main()
- dev
