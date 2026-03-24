@@ -23,4 +23,10 @@ def get_total_stats(menu):
     total_sum = sum(item['ціна'] for item in menu)
     print(f"Загальна ціна: {total_sum} грн. Кількість страв: {len(menu)}")
 
+# Функція для підрахунку ціни за обраною категорією (Завдання Г.2)
+def get_category_price(menu):
+    cat = input("Введіть категорію: ")
+    res = sum(item['ціна'] for item in menu if item.get('категорія') == cat)
+    print(f"Сума для {cat}: {res} грн")
+
 
