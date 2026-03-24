@@ -29,4 +29,10 @@ def get_category_price(menu):
     res = sum(item['ціна'] for item in menu if item.get('категорія') == cat)
     print(f"Сума для {cat}: {res} грн")
 
+# Функція для сортування меню за ціною (Завдання Г.3)
+def sort_by_price(menu):
+    print("1. Зростання 2. Спадання")
+    rev = True if input() == "2" else False
+    sorted_m = sorted(menu, key=lambda x: x['ціна'], reverse=rev)
+    for i in sorted_m: print(f"{i['назва']}: {i['ціна']}")
 
